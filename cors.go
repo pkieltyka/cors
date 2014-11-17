@@ -95,8 +95,8 @@ func (cors *Cors) Handler(h http.Handler) http.Handler {
 			cors.handlePreflight(w, r)
 		} else {
 			cors.handleActualRequest(w, r)
+			h.ServeHTTP(w, r)
 		}
-		h.ServeHTTP(w, r)
 	})
 }
 
@@ -115,8 +115,8 @@ func (cors *Cors) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.Ha
 		cors.handlePreflight(w, r)
 	} else {
 		cors.handleActualRequest(w, r)
+		next(w, r)
 	}
-	next(w, r)
 }
 
 // handlePreflight handles pre-flight CORS requests
